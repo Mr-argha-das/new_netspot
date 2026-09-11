@@ -1,0 +1,1 @@
+{% extends "base.html" %}<section class="wrap"><span class="pill">FAQ</span><h2>QUESTIONS</h2>{% for f in faqs if f.active %}<details class="card"><summary>{{f.question}}</summary><p>{{f.answer}}</p></details>{% else %}<div class="card">No FAQs yet.</div>{% endfor %}</section>
