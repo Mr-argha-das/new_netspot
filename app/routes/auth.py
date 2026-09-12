@@ -25,7 +25,8 @@ def login_post(request:Request,email:str=Form(...),password:str=Form(...)):
     u=find_one("users",email=email)
     if not u or not verify_password(password,u["password_hash"]): return T(request,"login.html",error="Invalid email or password.")
     request.session["user_id"]=u["id"]
-    return RedirectResponse("/dashboard",303)
+    destination="/admin/dashboard" if u.get("role")=="admin" else "/dashboard"
+    return RedirectResponse(destination,303)
 @router.get("/logout")
 def logout(request:Request):
     request.session.clear(); return RedirectResponse("/",303)

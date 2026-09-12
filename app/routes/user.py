@@ -8,6 +8,7 @@ def T(request,n,**kw): return request.app.state.templates.TemplateResponse(n,{"r
 def dashboard(request:Request):
     u=current_user(request)
     if not u:return RedirectResponse("/login",303)
+    if u.get("role")=="admin":return RedirectResponse("/admin/dashboard",303)
     teams=read("teams"); team=teams[teams.owner_id.astype(str)==str(u["id"])].iloc[-1].to_dict() if not teams.empty and (teams.owner_id.astype(str)==str(u["id"])).any() else None
     apps=read("applications"); apps=apps[apps.owner_id.astype(str)==str(u["id"])] if not apps.empty else apps
     notes=read("notifications"); notes=notes[notes.user_id.astype(str)==str(u["id"])] if not notes.empty else notes
